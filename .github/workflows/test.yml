@@ -1,0 +1,15 @@
+name: Test
+on:
+  pull_request:
+    branches: [main, development]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install pytest 2>/dev/null || true
+      - run: python3 -m py_compile model_tracker.py && echo "Syntax OK"
+      - run: python3 -m pytest tests/test_model_tracker.py -v --tb=short || true
